@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Un lugar para vos 🌻</title>
+
+<style>
+*{box-sizing:border-box}
+
+html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#111;
+    font-family:Georgia,serif;
+}
+
+.scene{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    background:#111;
+}
+
+/* Imagen del campo */
+.campo{
+    position:absolute;
+    inset:-8%;
+    width:116%;
+    height:116%;
+    object-fit:cover;
+    object-position:center;
+    filter:saturate(1.08) contrast(1.03);
+    transform:scale(1.04);
+    animation:camara 18s ease-in-out infinite alternate;
+    will-change:transform;
+}
+
+@keyframes camara{
+    0%{transform:scale(1.04) translate3d(0,0,0)}
+    100%{transform:scale(1.13) translate3d(-1.2%,-1%,0)}
+}
+
+/* Vigneta cinematográfica */
+.vigneta{
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(ellipse at center,
+        rgba(0,0,0,0) 35%,
+        rgba(0,0,0,.12) 65%,
+        rgba(0,0,0,.55) 100%);
+    pointer-events:none;
+}
+
+/* Luz cálida */
+.luz{
+    position:absolute;
+    inset:-20%;
+    background:
+      radial-gradient(circle at 78% 28%,
+        rgba(255,218,120,.18),
+        transparent 25%);
+    mix-blend-mode:screen;
+    animation:luz 7s ease-in-out infinite alternate;
+    pointer-events:none;
+}
+
+@keyframes luz{
+    from{opacity:.55;transform:translateX(-1%)}
+    to{opacity:1;transform:translateX(1%)}
+}
+
+/* Pétalos */
+.petalo{
+    position:absolute;
+    top:-10vh;
+    width:13px;
+    height:7px;
+    border-radius:100% 0 100% 0;
+    background:rgba(255,190,35,.9);
+    filter:blur(.3px);
+    animation:caer linear infinite;
+    pointer-events:none;
+}
+
+.p1{left:8%;animation-duration:8s;animation-delay:1s}
+.p2{left:23%;animation-duration:11s;animation-delay:3s}
+.p3{left:43%;animation-duration:9s}
+.p4{left:66%;animation-duration:12s;animation-delay:2s}
+.p5{left:84%;animation-duration:10s;animation-delay:4s}
+.p6{left:95%;animation-duration:7s;animation-delay:1.5s}
+
+@keyframes caer{
+    0%{transform:translate3d(0,-10vh,0) rotate(0deg);opacity:0}
+    10%{opacity:.9}
+    50%{transform:translate3d(70px,50vh,0) rotate(180deg)}
+    100%{transform:translate3d(-50px,115vh,0) rotate(420deg);opacity:0}
+}
+
+/* Contenido */
+.contenido{
+    position:absolute;
+    z-index:10;
+    left:50%;
+    top:50%;
+    width:min(88%,420px);
+    transform:translate(-50%,-50%);
+    text-align:center;
+    color:white;
+    text-shadow:0 3px 15px rgba(0,0,0,.8);
+    transition:transform .25s ease-out;
+}
+
+.entrada{
+    animation:entrada 2s ease both;
+}
+
+@keyframes entrada{
+    from{opacity:0;transform:translate(-50%,-45%) scale(1.04)}
+    to{opacity:1;transform:translate(-50%,-50%) scale(1)}
+}
+
+h1{
+    font-size:clamp(30px,8vw,44px);
+    margin:0 0 10px;
+}
+
+.sub{
+    font-size:18px;
+    line-height:1.5;
+    margin:0 auto 22px;
+}
+
+button{
+    border:0;
+    border-radius:999px;
+    padding:14px 25px;
+    background:rgba(255,255,255,.94);
+    color:#9a650b;
+    font-size:17px;
+    font-weight:bold;
+    box-shadow:0 8px 30px rgba(0,0,0,.35);
+    transition:transform .2s;
+}
+
+button:active{transform:scale(.94)}
+
+#carta{
+    display:none;
+    margin-top:18px;
+    padding:23px;
+    border-radius:20px;
+    background:rgba(255,249,231,.96);
+    color:#514735;
+    text-shadow:none;
+    box-shadow:0 12px 45px rgba(0,0,0,.45);
+    animation:aparecer .8s ease both;
+}
+
+#carta h2{
+    margin-top:0;
+    color:#a56d0a;
+}
+
+#carta p{
+    line-height:1.55;
+    font-size:16px;
+}
+
+@keyframes aparecer{
+    from{opacity:0;transform:translateY(25px) scale(.9)}
+    to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+/* Oscurece un poquito al abrir la carta */
+.scene.carta-abierta .campo{
+    filter:saturate(.95) brightness(.72);
+}
+
+.scene.carta-abierta .vigneta{
+    background:
+      radial-gradient(ellipse at center,
+        rgba(0,0,0,.08) 20%,
+        rgba(0,0,0,.58) 100%);
+}
+</style>
+</head>
+
+<body>
+
+<div class="scene" id="scene">
+
+    <img class="campo" src="campo.png" alt="Campo de girasoles">
+
+    <div class="luz"></div>
+
+    <div class="petalo p1"></div>
+    <div class="petalo p2"></div>
+    <div class="petalo p3"></div>
+    <div class="petalo p4"></div>
+    <div class="petalo p5"></div>
+    <div class="petalo p6"></div>
+
+    <div class="vigneta"></div>
+
+    <div class="contenido entrada" id="contenido">
+
+        <h1>Un lugar para vos 🌻</h1>
+
+        <p class="sub">
+            Quería regalarte un pequeño lugar
+            donde por un momento pudiéramos
+            estar juntos. 💛
+        </p>
+
+        <button onclick="abrirCarta()">
+            Acercate 💌
+        </button>
+
+        <div id="carta">
+            <h2>Para vos 🌻</h2>
+
+            <p>
+                Aunque estemos lejos, quería crear
+                este pequeño lugar pensando en vos.
+            </p>
+
+            <p>
+                Espero que cuando mires este campo
+                puedas sentir un poquito del cariño
+                que quise poner en cada detalle. 💛
+            </p>
+
+            <p>
+                Te quiero muchísimo. 🌻
+            </p>
+        </div>
+
+    </div>
+</div>
+
+<script>
+const scene = document.getElementById("scene");
+const contenido = document.getElementById("contenido");
+const campo = document.querySelector(".campo");
+
+function parallax(x,y){
+    const px=(x/window.innerWidth-.5);
+    const py=(y/window.innerHeight-.5);
+
+    campo.style.transform =
+        `scale(1.08) translate3d(${px*-14}px,${py*-10}px,0)`;
+
+    contenido.style.transform =
+        `translate(-50%,-50%) translate3d(${px*-5}px,${py*-4}px,0)`;
+}
+
+document.addEventListener("mousemove",e=>{
+    parallax(e.clientX,e.clientY);
+});
+
+document.addEventListener("touchmove",e=>{
+    const t=e.touches[0];
+    parallax(t.clientX,t.clientY);
+},{passive:true});
+
+function abrirCarta(){
+    document.getElementById("carta").style.display="block";
+    scene.classList.add("carta-abierta");
+}
+</script>
+
+</body>
+</html>
